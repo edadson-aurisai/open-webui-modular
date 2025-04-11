@@ -1,6 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import staticCopy from 'vite-plugin-static-copy';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // /** @type {import('vite').Plugin} */
 // const viteServerConfig = {
@@ -19,12 +19,8 @@ import staticCopy from 'vite-plugin-static-copy';
 export default defineConfig({
 	plugins: [
 		sveltekit(),
-		staticCopy({
+		viteStaticCopy({
 			targets: [
-				{
-					src: 'static/pyodide/*',
-					dest: 'pyodide'
-				},
 				{
 					src: 'static/assets/*',
 					dest: 'assets'
