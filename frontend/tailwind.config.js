@@ -1,13 +1,19 @@
-import typography from '@tailwindcss/typography';
-import containerQuries from '@tailwindcss/container-queries';
-
 /** @type {import('tailwindcss').Config} */
 export default {
-	darkMode: 'class',
-	content: ['./src/**/*.{html,js,svelte,ts}'],
+	content: [
+		'./src/**/*.{html,js,svelte,ts}',
+		'./src/**/*.svelte',
+		'./src/**/*.ts',
+		'./src/**/*.js'
+	],
 	theme: {
 		extend: {
 			colors: {
+				primary: 'var(--color-primary)',
+				secondary: 'var(--color-secondary)',
+				accent: 'var(--color-accent)',
+				background: 'var(--color-background)',
+				foreground: 'var(--color-foreground)',
 				gray: {
 					50: 'var(--color-gray-50, #f9f9f9)',
 					100: 'var(--color-gray-100, #ececec)',
@@ -22,6 +28,9 @@ export default {
 					900: 'var(--color-gray-900, #171717)',
 					950: 'var(--color-gray-950, #0d0d0d)'
 				}
+			},
+			fontFamily: {
+				sans: ['Inter var', 'sans-serif']
 			},
 			typography: {
 				DEFAULT: {
@@ -39,5 +48,8 @@ export default {
 			}
 		}
 	},
-	plugins: [typography, containerQuries]
+	plugins: [
+		require('@tailwindcss/typography'),
+		require('@tailwindcss/container-queries')
+	]
 };

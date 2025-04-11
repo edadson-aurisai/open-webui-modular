@@ -1,7 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import staticCopy from 'vite-plugin-static-copy';
 
 // /** @type {import('vite').Plugin} */
 // const viteServerConfig = {
@@ -20,12 +19,23 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 export default defineConfig({
 	plugins: [
 		sveltekit(),
-		viteStaticCopy({
+		staticCopy({
 			targets: [
 				{
-					src: 'node_modules/onnxruntime-web/dist/*.jsep.*',
-
-					dest: 'wasm'
+					src: 'static/pyodide/*',
+					dest: 'pyodide'
+				},
+				{
+					src: 'static/assets/*',
+					dest: 'assets'
+				},
+				{
+					src: 'static/audio/*',
+					dest: 'audio'
+				},
+				{
+					src: 'static/themes/*',
+					dest: 'themes'
 				}
 			]
 		})
@@ -34,8 +44,17 @@ export default defineConfig({
 		APP_VERSION: JSON.stringify(process.env.npm_package_version),
 		APP_BUILD_HASH: JSON.stringify(process.env.APP_BUILD_HASH || 'dev-build')
 	},
+	server: {
+		port: 3000,
+		strictPort: false,
+		host: true
+	},
 	build: {
+		target: 'esnext',
 		sourcemap: true
+	},
+	optimizeDeps: {
+		exclude: ['@codemirror/state', '@codemirror/view']
 	},
 	worker: {
 		format: 'es'
