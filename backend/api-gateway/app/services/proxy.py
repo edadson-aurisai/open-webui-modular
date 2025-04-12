@@ -14,15 +14,15 @@ async def proxy_request(request: Request, service_url: str, path: str) -> Respon
     method = request.method
     url = f"{service_url}/{path}"
     headers = dict(request.headers)
-    
+
     # Remove host header to avoid conflicts
     headers.pop("host", None)
-    
+
     # Get request body if applicable
     body = await request.body()
-    
+
     logger.info(f"Proxying {method} request to {url}")
-    
+
     async with httpx.AsyncClient() as client:
         try:
             # Make the request to the target service
@@ -33,7 +33,7 @@ async def proxy_request(request: Request, service_url: str, path: str) -> Respon
                 content=body,
                 timeout=60.0,  # Increased timeout for long-running operations
             )
-            
+
             # Check if response is streaming
             if "text/event-stream" in response.headers.get("content-type", ""):
                 return StreamingResponse(
@@ -41,7 +41,7 @@ async def proxy_request(request: Request, service_url: str, path: str) -> Respon
                     status_code=response.status_code,
                     headers=dict(response.headers),
                 )
-            
+
             # Return the response
             return Response(
                 content=response.content,

@@ -19,9 +19,9 @@ services:
     build:
       context: ../api-gateway
       dockerfile: Dockerfile
-    # Only expose to internal network, not to host
-    expose:
-      - "8000"
+    # Expose to host for testing
+    ports:
+      - "8000:8000"
     environment:
       - INFERENCE_SERVICE_URL=http://inference-service:8001
       - AGENT_SERVICE_URL=http://agent-service:8002

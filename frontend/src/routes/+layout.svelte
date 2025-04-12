@@ -31,8 +31,9 @@
 	import { page } from '$app/stores';
 	import { Toaster, toast } from 'svelte-sonner';
 
-	import { executeToolServer, getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/auths';
+	// Updated imports to use new API routes
+	import { executeCodeAndFormat } from '$lib/utils/codeExecution';
+	// Will update auth API imports in a future phase
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -42,10 +43,11 @@
 	import { WEBUI_BASE_URL, WEBUI_HOSTNAME } from '$lib/constants';
 	import i18n, { initI18n, getLanguages, changeLanguage } from '$lib/i18n';
 	import { bestMatchingLanguage } from '$lib/utils';
-	import { getAllTags, getChatList } from '$lib/apis/chats';
+	// Updated imports to use new API routes
+import { fetch } from '@sveltejs/kit/fetch';
 	import NotificationToast from '$lib/components/NotificationToast.svelte';
 	import AppSidebar from '$lib/components/app/AppSidebar.svelte';
-	import { chatCompletion } from '$lib/apis/openai';
+	// Will update OpenAI API imports in a future phase
 
 	setContext('i18n', i18n);
 
@@ -111,17 +113,31 @@
 		console.log('executeTool', data, toolServer);
 
 		if (toolServer) {
-			const res = await executeToolServer(
-				toolServer.key,
-				toolServer.url,
-				data?.name,
-				data?.params,
-				toolServerData
-			);
-
-			console.log('executeToolServer', res);
-			if (cb) {
-				cb(JSON.parse(JSON.stringify(res)));
+			// Use new API route for tool server execution
+			try {
+				const response = await fetch('/api/tools/server', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${toolServer.key}`
+					},
+					body: JSON.stringify({
+						url: toolServer.url,
+						name: data?.name,
+						params: data?.params,
+						serverData: toolServerData
+					})
+				});
+				const res = await response.json();
+				console.log('executeToolServer', res);
+				if (cb) {
+					cb(JSON.parse(JSON.stringify(res)));
+				}
+			} catch (error) {
+				console.error('Error executing tool server:', error);
+				if (cb) {
+					cb({ error: 'Error executing tool server' });
+				}
 			}
 		} else {
 			if (cb) {
@@ -181,14 +197,34 @@
 				}
 			} else if (type === 'chat:title') {
 				currentChatPage.set(1);
-				await chats.set(await getChatList(localStorage.token, $currentChatPage));
+				// Use new API route for chat list
+				const chatResponse = await fetch(`/api/chats?page=${$currentChatPage}`, {
+					headers: {
+						Authorization: `Bearer ${localStorage.token}`
+					}
+				});
+				await chats.set(await chatResponse.json());
 			} else if (type === 'chat:tags') {
-				tags.set(await getAllTags(localStorage.token));
+				// Use new API route for tags
+				const tagsResponse = await fetch('/api/chats/tags', {
+					headers: {
+						Authorization: `Bearer ${localStorage.token}`
+					}
+				});
+				tags.set(await tagsResponse.json());
 			}
 		} else if (data?.session_id === $socket.id) {
 			if (type === 'execute:python') {
 				console.log('execute:python', data);
-				executePythonAsWorker(data.id, data.code, cb);
+				// Use the backend code execution service instead of Pyodide
+				const handleCodeExecution = async () => {
+					const result = await executeCodeAndFormat(localStorage.token, data.code, 'python');
+					if (cb) {
+						cb(result);
+					}
+				};
+
+				handleCodeExecution();
 			} else if (type === 'execute:tool') {
 				console.log('execute:tool', data);
 				executeTool(data, cb);
@@ -404,7 +440,9 @@
 
 		let backendConfig = null;
 		try {
-			backendConfig = await getBackendConfig();
+			// Use new API route for backend config
+			const response = await fetch('/api/config');
+			backendConfig = await response.json();
 			console.log('Backend config:', backendConfig);
 		} catch (error) {
 			console.error('Error loading backend config:', error);
@@ -447,7 +485,31 @@
 						$socket.emit('user-join', { auth: { token: sessionUser.token } });
 
 						await user.set(sessionUser);
-						await config.set(await getBackendConfig());
+
+						// Use new API route for backend config
+						const configResponse = await fetch('/api/config');
+						await config.set(await configResponse.json());
+
+						// Load chats and tags
+						try {
+							// Use new API route for chat list
+							const chatResponse = await fetch(`/api/chats?page=${$currentChatPage}`, {
+								headers: {
+									Authorization: `Bearer ${localStorage.token}`
+								}
+							});
+							await chats.set(await chatResponse.json());
+
+							// Use new API route for tags
+							const tagsResponse = await fetch('/api/chats/tags', {
+								headers: {
+									Authorization: `Bearer ${localStorage.token}`
+								}
+							});
+							tags.set(await tagsResponse.json());
+						} catch (error) {
+							console.error('Error loading chats or tags:', error);
+						}
 					} else {
 						// Redirect Invalid Session User to /auth Page
 						localStorage.removeItem('token');
