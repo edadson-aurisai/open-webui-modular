@@ -42,6 +42,26 @@ async def error_handling_middleware(request: Request, call_next):
 # Include API routes
 app.include_router(api_router, prefix=settings.api_prefix)
 
+# Root endpoint
+@app.get("/")
+async def root():
+    return {
+        "service": settings.app_name,
+        "version": settings.version,
+        "description": "API Gateway for Open WebUI - Entry point for all client requests to microservices",
+        "endpoints": {
+            "health": "/health - Health check endpoint",
+            "api": f"{settings.api_prefix} - API endpoints",
+            "docs": "/docs - API documentation",
+            "services": {
+                "inference": f"{settings.api_prefix}/inference - Inference service endpoints",
+                "agent": f"{settings.api_prefix}/agent - Agent service endpoints",
+                "retrieval": f"{settings.api_prefix}/retrieval - Retrieval service endpoints",
+                "chat": f"{settings.api_prefix}/chat - Chat service endpoints"
+            }
+        }
+    }
+
 # Health check endpoint
 @app.get("/health")
 async def health_check():
