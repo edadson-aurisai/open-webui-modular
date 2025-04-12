@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-import httpx
 import logging
 from typing import Dict, Any
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.routes import router as api_router
@@ -18,7 +19,6 @@ app = FastAPI(
 )
 
 # Add CORS middleware
-from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
