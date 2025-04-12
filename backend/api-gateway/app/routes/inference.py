@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
-import httpx
 from typing import Any, Dict
 
 from app.core.config import settings
