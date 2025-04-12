@@ -264,6 +264,16 @@ If you encounter issues:
 3. Check the logs for error messages.
 
 4. Ensure PostgreSQL is running if using the chat-service with database functionality.
+   ```bash
+   # For local development with SQLite
+   cd chat-service
+   python -m alembic upgrade head
+
+   # For production with PostgreSQL
+   export DATABASE_URL=postgresql://username:password@localhost:5432/dbname
+   cd chat-service
+   python -m alembic upgrade head
+   ```
 
 5. Verify environment variables are correctly set in your .env file.
 

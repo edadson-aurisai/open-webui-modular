@@ -1,0 +1,24 @@
+FROM python:3.12-slim AS base
+
+WORKDIR /app
+
+# Copy requirements files
+COPY retrieval-service/requirements.txt /app/requirements.txt
+COPY common/requirements.txt /app/common_requirements.txt
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r common_requirements.txt
+
+# Copy common module and service code
+COPY common /app/common
+COPY retrieval-service /app/retrieval-service
+
+# Add the parent directory to PYTHONPATH
+ENV PYTHONPATH="/app:${PYTHONPATH}"
+
+# Set working directory to service directory
+WORKDIR /app/retrieval-service
+
+# Start the service
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8007"]
