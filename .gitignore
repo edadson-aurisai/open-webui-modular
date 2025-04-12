@@ -175,3 +175,19 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Project specific
+webui.db
+
+# Docker
+docker-compose.override.yml
+
+# Local development settings
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Deployment
+.vercel
+.netlify
