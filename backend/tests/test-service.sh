@@ -5,7 +5,7 @@
 # Check if service name is provided
 if [ -z "$1" ]; then
     echo "Usage: $0 <service-name>"
-    echo "Available services: api-gateway, inference-service, agent-service, retrieval-service, chat-service"
+    echo "Available services: api-gateway, chat-service, agent-service, inference-service, retrieval-service"
     exit 1
 fi
 
@@ -26,22 +26,23 @@ export $(grep -v '^#' backend/.env.dev | xargs)
 # Install service dependencies
 echo "Installing dependencies for $SERVICE_NAME..."
 pip install -r backend/$SERVICE_NAME/requirements.txt
+pip install -r backend/common/requirements.txt
 
 # Determine port based on service name
 case $SERVICE_NAME in
     "api-gateway")
         PORT=8000
         ;;
-    "inference-service")
+    "chat-service")
         PORT=8001
         ;;
     "agent-service")
         PORT=8002
         ;;
-    "retrieval-service")
+    "inference-service")
         PORT=8003
         ;;
-    "chat-service")
+    "retrieval-service")
         PORT=8004
         ;;
     *)

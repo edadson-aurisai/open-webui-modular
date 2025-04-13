@@ -11,10 +11,10 @@ from typing import Dict, List, Tuple
 # Service definitions
 SERVICES = {
     "api-gateway": 8000,
-    "inference-service": 8001,
+    "chat-service": 8001,
     "agent-service": 8002,
-    "retrieval-service": 8003,
-    "chat-service": 8004
+    "inference-service": 8003,
+    "retrieval-service": 8004
 }
 
 def check_service_health(service_name: str, port: int) -> Tuple[bool, str]:
