@@ -6,7 +6,7 @@ Script to test the health of all backend services.
 import argparse
 import requests
 import sys
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 
 # Service definitions
 SERVICES = {
