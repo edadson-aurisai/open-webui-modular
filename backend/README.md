@@ -39,19 +39,24 @@
 The backend consists of the following microservices:
 
 ### API Gateway (Port 8000)
+
 Entry point for all client requests, handling routing, authentication, and request validation.
 
-### Inference Service (Port 8001)
-Manages LLM interactions with multiple model providers (Ollama, OpenAI, etc.).
+### Chat Service (Port 8001)
+
+Manages chat sessions, message history, and conversation context.
 
 ### Agent Service (Port 8002)
+
 Orchestrates AI agents, tools, and workflows for complex tasks.
 
-### Retrieval Service (Port 8003)
-Handles vector search, document processing, and RAG functionality.
+### Inference Service (Port 8003)
 
-### Chat Service (Port 8004)
-Manages chat sessions, message history, and conversation context.
+Manages LLM interactions with multiple model providers (Ollama, OpenAI, etc.).
+
+### Retrieval Service (Port 8004)
+
+Handles vector search, document processing, and RAG functionality.
 
 ## Getting Started 🚀
 
@@ -64,41 +69,47 @@ Manages chat sessions, message history, and conversation context.
 ### Quick Start with Docker Compose
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/your-org/open-webui-modular.git
    cd open-webui-modular/backend/deployments
    ```
 
 2. Configure environment variables:
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
 3. Start the services:
+
    ```bash
    docker-compose up -d
    ```
 
-4. Access the API Gateway at http://localhost:8000
+4. Access the API Gateway at <http://localhost:8000>
 
 ### Development Setup
 
 For local development, you can run each service individually:
 
 1. Create a virtual environment:
+
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 2. Install dependencies for a specific service:
+
    ```bash
    cd backend/{service-name} # Replace {service-name} with the service you want to run (ie. inference-service)
    pip install -r requirements.txt
    ```
 
 3. Run the service:
+
    ```bash
    uvicorn app.main:app --reload --port 8001
    ```
@@ -132,11 +143,12 @@ See the `.env.example` file in the deployments directory for a complete list of 
 ## API Documentation 📚
 
 API documentation is available at:
-- API Gateway: http://localhost:8000/docs
-- Inference Service: http://localhost:8001/docs
-- Agent Service: http://localhost:8002/docs
-- Retrieval Service: http://localhost:8003/docs
-- Chat Service: http://localhost:8004/docs
+
+- API Gateway: <http://localhost:8000/docs>
+- Inference Service: <http://localhost:8001/docs>
+- Agent Service: <http://localhost:8002/docs>
+- Retrieval Service: <http://localhost:8003/docs>
+- Chat Service: <http://localhost:8004/docs>
 
 Each service provides a root endpoint (`/`) with information about available endpoints, and a Swagger UI documentation page at `/docs`.
 
@@ -164,12 +176,14 @@ kubectl apply -f deployments/kubernetes/
 For production environments:
 
 1. Configure production settings:
+
    ```bash
    cp deployments/.env.example deployments/.env.production
    # Edit .env.production with secure credentials
    ```
 
 2. Deploy with SSL support:
+
    ```bash
    cd deployments
    ./deploy.sh production
@@ -203,6 +217,7 @@ cd backend/tests
 ```
 
 Available services:
+
 - `api-gateway` (port 8000)
 - `inference-service` (port 8001)
 - `agent-service` (port 8002)
@@ -252,11 +267,13 @@ If you have any questions, suggestions, or need assistance, please open an issue
 If you encounter issues:
 
 1. Check that the required dependencies are installed:
+
    ```bash
    pip install -r backend/<service-name>/requirements.txt
    ```
 
 2. Verify that service ports are not already in use:
+
    ```bash
    lsof -i :<port>
    ```
@@ -264,6 +281,7 @@ If you encounter issues:
 3. Check the logs for error messages.
 
 4. Ensure PostgreSQL is running if using the chat-service with database functionality.
+
    ```bash
    # For local development with SQLite
    cd chat-service

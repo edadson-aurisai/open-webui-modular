@@ -26,22 +26,22 @@ The Inference Service handles LLM model inference for Open WebUI.
 
 1. Create a virtual environment:
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
 
 2. Install dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 3. Run the service:
 
-```bash
-uvicorn app.main:app --reload --port 8001
-```
+    ```bash
+    uvicorn app.main:app --reload --port 8003
+    ```
 
 ### Environment Variables
 
@@ -57,10 +57,9 @@ uvicorn app.main:app --reload --port 8001
 ## Testing
 
 Run tests with:
-
-```bash
-pytest
-```
+    ```bash
+    pytest
+    ```
 
 ## Deployment
 

@@ -21,4 +21,4 @@ ENV PYTHONPATH="/app:${PYTHONPATH}"
 WORKDIR /app/chat-service
 
 # Run migrations on startup
-CMD ["sh", "-c", "python -m alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8004"]
+CMD ["sh", "-c", "python -m alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8001"]
