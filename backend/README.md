@@ -120,10 +120,12 @@ Each service is configured through environment variables. Key configuration opti
 
 ```env
 # API Gateway
-INFERENCE_SERVICE_URL=http://inference-service:8001
+
+CHAT_SERVICE_URL=http://chat-service:8001
 AGENT_SERVICE_URL=http://agent-service:8002
-RETRIEVAL_SERVICE_URL=http://retrieval-service:8003
-CHAT_SERVICE_URL=http://chat-service:8004
+INFERENCE_SERVICE_URL=http://inference-service:8003
+RETRIEVAL_SERVICE_URL=http://retrieval-service:8004
+
 JWT_SECRET_KEY=your-secret-key
 
 # Inference Service
@@ -145,10 +147,11 @@ See the `.env.example` file in the deployments directory for a complete list of 
 API documentation is available at:
 
 - API Gateway: <http://localhost:8000/docs>
-- Inference Service: <http://localhost:8001/docs>
+- Chat Service: <http://localhost:8001/docs>
 - Agent Service: <http://localhost:8002/docs>
-- Retrieval Service: <http://localhost:8003/docs>
-- Chat Service: <http://localhost:8004/docs>
+- Inference Service: <http://localhost:8003/docs>
+- Retrieval Service: <http://localhost:8004/docs>
+
 
 Each service provides a root endpoint (`/`) with information about available endpoints, and a Swagger UI documentation page at `/docs`.
 

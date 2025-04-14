@@ -47,10 +47,12 @@ GET /api/v1/chats
 ```
 
 **Query Parameters**:
+
 - `page` (optional): Page number for pagination (default: 1)
 - `limit` (optional): Number of chats per page (default: 50)
 
 **Response**:
+
 ```json
 {
   "chats": [
@@ -74,6 +76,7 @@ POST /api/v1/chats
 ```
 
 **Request Body**:
+
 ```json
 {
   "title": "string",
@@ -85,6 +88,7 @@ POST /api/v1/chats
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string"
@@ -98,9 +102,11 @@ GET /api/v1/chats/{chat_id}
 ```
 
 **Path Parameters**:
+
 - `chat_id`: ID of the chat
 
 **Response**:
+
 ```json
 {
   "id": "string",
@@ -126,9 +132,11 @@ PUT /api/v1/chats/{chat_id}
 ```
 
 **Path Parameters**:
+
 - `chat_id`: ID of the chat
 
 **Request Body**:
+
 ```json
 {
   "title": "string",
@@ -140,6 +148,7 @@ PUT /api/v1/chats/{chat_id}
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string",
@@ -165,9 +174,11 @@ DELETE /api/v1/chats/{chat_id}
 ```
 
 **Path Parameters**:
+
 - `chat_id`: ID of the chat
 
 **Response**:
+
 ```json
 true
 ```
@@ -179,9 +190,11 @@ POST /api/v1/chats/{chat_id}/share
 ```
 
 **Path Parameters**:
+
 - `chat_id`: ID of the chat
 
 **Response**:
+
 ```
 "share_id_string"
 ```
@@ -197,11 +210,13 @@ GET /api/v1/messages
 ```
 
 **Query Parameters**:
+
 - `chat_id`: ID of the chat
 - `page` (optional): Page number for pagination (default: 1)
 - `limit` (optional): Number of messages per page (default: 50)
 
 **Response**:
+
 ```json
 {
   "messages": [
@@ -223,6 +238,7 @@ POST /api/v1/messages
 ```
 
 **Request Body**:
+
 ```json
 {
   "chat_id": "string",
@@ -232,6 +248,7 @@ POST /api/v1/messages
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string"
@@ -245,9 +262,11 @@ PUT /api/v1/messages/{message_id}
 ```
 
 **Path Parameters**:
+
 - `message_id`: ID of the message
 
 **Request Body**:
+
 ```json
 {
   "content": "string"
@@ -255,6 +274,7 @@ PUT /api/v1/messages/{message_id}
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string",
@@ -273,9 +293,11 @@ DELETE /api/v1/messages/{message_id}
 ```
 
 **Path Parameters**:
+
 - `message_id`: ID of the message
 
 **Response**:
+
 ```json
 true
 ```
@@ -291,6 +313,7 @@ GET /api/v1/folders
 ```
 
 **Response**:
+
 ```json
 {
   "folders": [
@@ -311,6 +334,7 @@ POST /api/v1/folders
 ```
 
 **Request Body**:
+
 ```json
 {
   "name": "string"
@@ -318,6 +342,7 @@ POST /api/v1/folders
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string"
@@ -331,9 +356,11 @@ PUT /api/v1/folders/{folder_id}
 ```
 
 **Path Parameters**:
+
 - `folder_id`: ID of the folder
 
 **Request Body**:
+
 ```json
 {
   "name": "string"
@@ -341,6 +368,7 @@ PUT /api/v1/folders/{folder_id}
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string",
@@ -357,9 +385,11 @@ DELETE /api/v1/folders/{folder_id}
 ```
 
 **Path Parameters**:
+
 - `folder_id`: ID of the folder
 
 **Response**:
+
 ```json
 true
 ```
@@ -375,6 +405,7 @@ GET /api/v1/tags
 ```
 
 **Response**:
+
 ```json
 {
   "tags": [
@@ -395,6 +426,7 @@ POST /api/v1/tags
 ```
 
 **Request Body**:
+
 ```json
 {
   "name": "string",
@@ -403,6 +435,7 @@ POST /api/v1/tags
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string"
@@ -416,9 +449,11 @@ PUT /api/v1/tags/{tag_id}
 ```
 
 **Path Parameters**:
+
 - `tag_id`: ID of the tag
 
 **Request Body**:
+
 ```json
 {
   "name": "string",
@@ -427,6 +462,7 @@ PUT /api/v1/tags/{tag_id}
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string",
@@ -444,9 +480,11 @@ DELETE /api/v1/tags/{tag_id}
 ```
 
 **Path Parameters**:
+
 - `tag_id`: ID of the tag
 
 **Response**:
+
 ```json
 true
 ```
@@ -468,6 +506,7 @@ GET /api/v1/inference/models
 ```
 
 **Response**:
+
 ```json
 [
   {
@@ -503,6 +542,7 @@ GET /api/v1/inference/models/base
 ```
 
 **Response**:
+
 ```json
 [
   {
@@ -542,6 +582,7 @@ POST /api/v1/inference/openai/chat/completions
 ```
 
 **Request Body**:
+
 ```json
 {
   "model": "string",
@@ -563,6 +604,7 @@ POST /api/v1/inference/openai/chat/completions
 ```
 
 **Response** (when `stream=false`):
+
 ```json
 {
   "id": "string",
@@ -596,6 +638,7 @@ POST /api/v1/inference/openai/completions
 ```
 
 **Request Body**:
+
 ```json
 {
   "model": "string",
@@ -612,6 +655,7 @@ POST /api/v1/inference/openai/completions
 ```
 
 **Response** (when `stream=false`):
+
 ```json
 {
   "id": "string",
@@ -859,6 +903,7 @@ POST /api/v1/agents/tools/execute
 ```
 
 **Request Body**:
+
 ```json
 {
   "tool_name": "string",
@@ -867,6 +912,7 @@ POST /api/v1/agents/tools/execute
 ```
 
 **Response**:
+
 ```json
 {
   "result": {}
@@ -884,10 +930,12 @@ GET /api/v1/agents/tasks
 ```
 
 **Query Parameters**:
+
 - `page` (optional): Page number for pagination (default: 1)
 - `limit` (optional): Number of tasks per page (default: 50)
 
 **Response**:
+
 ```json
 {
   "tasks": [
@@ -910,6 +958,7 @@ POST /api/v1/agents/tasks
 ```
 
 **Request Body**:
+
 ```json
 {
   "name": "string",
@@ -920,6 +969,7 @@ POST /api/v1/agents/tasks
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string"
@@ -933,9 +983,11 @@ GET /api/v1/agents/tasks/{task_id}
 ```
 
 **Path Parameters**:
+
 - `task_id`: ID of the task
 
 **Response**:
+
 ```json
 {
   "id": "string",
@@ -964,9 +1016,11 @@ POST /api/v1/agents/tasks/{task_id}/cancel
 ```
 
 **Path Parameters**:
+
 - `task_id`: ID of the task
 
 **Response**:
+
 ```json
 true
 ```
@@ -982,6 +1036,7 @@ GET /api/v1/agents/pipelines
 ```
 
 **Response**:
+
 ```json
 {
   "pipelines": [
@@ -1003,6 +1058,7 @@ POST /api/v1/agents/pipelines
 ```
 
 **Request Body**:
+
 ```json
 {
   "name": "string",
@@ -1026,6 +1082,7 @@ POST /api/v1/agents/pipelines
 ```
 
 **Response**:
+
 ```json
 {
   "id": "string"
@@ -1039,9 +1096,11 @@ GET /api/v1/agents/pipelines/{pipeline_id}
 ```
 
 **Path Parameters**:
+
 - `pipeline_id`: ID of the pipeline
 
 **Response**:
+
 ```json
 {
   "id": "string",
@@ -1074,9 +1133,11 @@ PUT /api/v1/agents/pipelines/{pipeline_id}
 ```
 
 **Path Parameters**:
+
 - `pipeline_id`: ID of the pipeline
 
 **Request Body**:
+
 ```json
 {
   "name": "string",
