@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import logging
 
 from app.core.config import settings
@@ -16,7 +17,6 @@ app = FastAPI(
 )
 
 # Add CORS middleware
-from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -39,6 +39,20 @@ async def error_handling_middleware(request: Request, call_next):
 
 # Include API routes
 app.include_router(api_router, prefix=settings.api_prefix)
+
+# Root endpoint
+@app.get("/")
+async def root():
+    return {
+        "service": settings.app_name,
+        "version": settings.version,
+        "description": "Retrieval service for Open WebUI - Manages vector databases, embeddings, and RAG functionality",
+        "endpoints": {
+            "health": "/health - Health check endpoint",
+            "api": f"{settings.api_prefix} - API endpoints",
+            "docs": "/docs - API documentation"
+        }
+    }
 
 # Health check endpoint
 @app.get("/health")

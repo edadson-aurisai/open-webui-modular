@@ -1,0 +1,96 @@
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: open-webui-postgres
+    environment:
+      POSTGRES_USER: openwebui
+      POSTGRES_PASSWORD: openwebui
+      POSTGRES_DB: openwebui
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openwebui"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./api-gateway/Dockerfile.multi
+    container_name: open-webui-api-gateway
+    environment:
+      - DATABASE_URL=postgresql://openwebui:openwebui@postgres:5432/openwebui
+      - CHAT_SERVICE_URL=http://chat-service:8001
+      - AGENT_SERVICE_URL=http://agent-service:8002
+      - INFERENCE_SERVICE_URL=http://inference-service:8003
+      - RETRIEVAL_SERVICE_URL=http://retrieval-service:8004
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Chat Service
+  chat-service:
+    build:
+      context: .
+      dockerfile: ./chat-service/Dockerfile.multi
+    container_name: open-webui-chat-service
+    environment:
+      - DATABASE_URL=postgresql://openwebui:openwebui@postgres:5432/openwebui
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Agent Service
+  agent-service:
+    build:
+      context: .
+      dockerfile: ./agent-service/Dockerfile.multi
+    container_name: open-webui-agent-service
+    environment:
+      - DATABASE_URL=postgresql://openwebui:openwebui@postgres:5432/openwebui
+    ports:
+      - "8002:8002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+        
+  # Inference Service
+  inference-service:
+    build:
+      context: .
+      dockerfile: ./inference-service/Dockerfile.multi
+    container_name: open-webui-inference-service
+    environment:
+      - DATABASE_URL=postgresql://openwebui:openwebui@postgres:5432/openwebui
+    ports:
+      - "8003:8003"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Retrieval Service
+  retrieval-service:
+    build:
+      context: .
+      dockerfile: ./retrieval-service/Dockerfile.multi
+    container_name: open-webui-retrieval-service
+    environment:
+      - DATABASE_URL=postgresql://openwebui:openwebui@postgres:5432/openwebui
+    ports:
+      - "8004:8004"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

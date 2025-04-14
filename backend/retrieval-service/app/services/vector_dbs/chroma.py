@@ -1,7 +1,6 @@
 import logging
 from typing import List, Dict, Any, Optional
 import chromadb
-from chromadb.config import Settings
 
 from app.core.config import settings
 from app.models.vector import VectorSearchResult
@@ -13,24 +12,21 @@ class ChromaClient:
     """
     Client for Chroma vector database
     """
-    
+
     def __init__(self):
         """
         Initialize the Chroma client
         """
         try:
-            # Initialize the client
-            self.client = chromadb.Client(
-                Settings(
-                    chroma_db_impl="duckdb+parquet",
-                    persist_directory="./chroma_db",
-                )
+            # Initialize the client with the new API
+            self.client = chromadb.PersistentClient(
+                path="./chroma_db"
             )
             logger.info("Initialized Chroma client")
         except Exception as e:
             logger.error(f"Error initializing Chroma client: {e}")
             raise
-    
+
     async def search(
         self,
         collection_name: str,
@@ -44,7 +40,7 @@ class ChromaClient:
         try:
             # Get or create the collection
             collection = self.client.get_or_create_collection(collection_name)
-            
+
             # Search the collection
             results = collection.query(
                 query_embeddings=[query_embedding],
@@ -52,12 +48,12 @@ class ChromaClient:
                 where=filter,
                 include=["documents", "metadatas", "distances"],
             )
-            
+
             return results
         except Exception as e:
             logger.error(f"Error searching Chroma collection: {e}")
             raise
-    
+
     async def upsert(
         self,
         collection_name: str,
@@ -72,7 +68,7 @@ class ChromaClient:
         try:
             # Get or create the collection
             collection = self.client.get_or_create_collection(collection_name)
-            
+
             # Upsert the vectors
             collection.upsert(
                 ids=ids,
@@ -83,7 +79,7 @@ class ChromaClient:
         except Exception as e:
             logger.error(f"Error upserting to Chroma collection: {e}")
             raise
-    
+
     async def delete(
         self,
         collection_name: str,
@@ -100,7 +96,7 @@ class ChromaClient:
             except ValueError:
                 # Collection doesn't exist
                 return
-            
+
             # Delete the vectors
             if ids:
                 collection.delete(ids=ids)

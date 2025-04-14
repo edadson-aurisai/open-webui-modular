@@ -1,10 +1,15 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
-# Copy requirements and install dependencies
+# Copy common module and requirements
+COPY ../common /app/common
 COPY requirements.txt .
+COPY ../common/requirements.txt ./common_requirements.txt
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r common_requirements.txt
 
 # Copy application code
 COPY . .
